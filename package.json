@@ -1,0 +1,65 @@
+{
+  "name": "sincere",
+  "version": "1.0.0",
+  "description": "A lightweight javascript base class providing intuitive interface for debugging and diagnostics",
+  "main": "Sincere.js",
+  "scripts": {
+    "clean": "rimraf .nyc_output out reports t*mp *.log *.t*mp *.lcov",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "lint": "eslint --ext .js .",
+    "test": "cross-env NODE_ENV=test nyc mocha 'test/**/*.spec.js'"
+  },
+  "keywords": [
+    "debug",
+    "breakpoints",
+    "assert",
+    "intercept",
+    "identification",
+    "diagnotics",
+    "formatting"
+  ],
+  "author": "Villem Alango",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/valango/sincere.git"
+  },
+  "bugs": {
+    "url": "https://github.com/valango/sincere/issues"
+  },
+  "homepage": "https://github.com/valango/sincere/README.md",
+  "files": [
+    "Sincere.js"
+  ],
+  "engines": {
+    "node": ">= 10.0.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
+    "rimraf": "^3.0.0"
+  },
+  "nyc": {
+    "all": true,
+    "check-coverage": true,
+    "exclude": [],
+    "include": [
+      "index.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "report-dir": "./reports"
+  }
+}
