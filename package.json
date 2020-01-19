@@ -1,7 +1,7 @@
 {
   "name": "sincere",
   "version": "1.0.1",
-  "description": "A lightweight javascript base class providing intuitive interface for debugging and diagnostics",
+  "description": "A lightweight javascript base class providing simple interface for debugging and diagnostics",
   "main": "Sincere.js",
   "scripts": {
     "clean": "rimraf .nyc_output out reports t*mp *.log *.t*mp *.lcov",
@@ -11,6 +11,7 @@
   },
   "keywords": [
     "debug",
+    "debugger",
     "breakpoints",
     "assert",
     "intercept",

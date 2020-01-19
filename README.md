@@ -28,7 +28,7 @@ Sincere.sincereHook(() => {
 const myInstance = new MyClass(...)
 
 let goodValue = myInstance.assert({good: true}, 'try')
-let badValue = myInstance.assert(0, 'try', 'this failed, but %s - you see', goodValue)
+let badValue = myInstance.assert(0, 'try', 'this failed, but %O - you see', goodValue)O
 
 ```
 
@@ -40,6 +40,12 @@ if your debugger breakpoint was set, you'd see the whole picture as it was just 
 How cool is that?
 
 ## API
+In 99% likelihood, _`assert()`_, _`sincereHook`_ and _`className`_ in all the API you need.
+
+Both _`assert()`_ and _`sincereMessage()`_ use Node.js native `util.format()`;
+see Node.js 
+[documentation](https://nodejs.org/dist/latest-v12.x/docs/api/util.html#util_util_format_format_args) 
+for details.
 
 ### Static methods
 
