@@ -1,6 +1,6 @@
 'use strict'
 const assert = require('assert').strict
-const { format, inspect } = require('util')
+const { format } = require('util')
 
 const notProduction = process.env.NODE_ENV !== 'production'
 const noop = () => undefined
@@ -87,13 +87,12 @@ class Sincere {
    * Compose a diagnostic message.
    *
    * @param {string} locus
-   * @param {Array<*>} args
+   * @param {Array<*>=} args
    * @returns {string}
    */
   sincereMessage (locus, args) {
-    const rest = args.map((a) => (a && typeof a === 'object') ? inspect(a) : a)
-    return this.sincereId + '.' + locus + ': ' +
-      format.apply(undefined, rest)
+    return this.sincereId + '.' + locus +
+      ((args && args.length > 0) ? ': ' + format.apply(undefined, args) : '')
   }
 }
 

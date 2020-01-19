@@ -30,6 +30,7 @@ describe(ME, () => {
   after(purge)
 
   beforeEach(() => {
+    Sincere.sincereReset()
     Sincere.sincereHook(false)
     trace = []
     o = new Derived()
@@ -43,6 +44,12 @@ describe(ME, () => {
       expect(new Sincere().sincereId).to.equal('Sincere#1')
       Sincere.sincereReset()  //  Should have no effect.
       expect(new Sincere().sincereId).to.equal('Sincere#2')
+    })
+
+    it('should create message', () => {
+      expect(o.sincereMessage('test')).to.match(/^D#\d!.test$/)
+      expect(o.sincereMessage('test', ['%O', [2]])).to
+        .match(/^D#\d!.test: \[ 2 \]/)
     })
 
     it('should assert', () => {
@@ -72,16 +79,21 @@ describe(ME, () => {
       expect(d.sincereId).to.equal('Sincere#1')
     })
 
+    it('should create message', () => {
+      expect(o.sincereMessage('test')).to.equal('D#0!.test')
+      expect(o.sincereMessage('test', ['%O', [2]])).to.eql('D#0!.test: [ 2 ]')
+    })
+
     it('should assert', () => {
       Sincere.sincereHook(hook)
       expect(o.assert('data', 'never')).to.equal('data')
       expect(trace).to.eql([])
       expect(() => o.assert(0, 'test', 'M/%i', 1, 2)).to.throw(
-        AssertionError, 'D#2!.test: M/1 2')
+        AssertionError, 'D#0!.test: M/1 2')
       expect(trace).to.eql([{ o, loc: 'test', args: ['M/%i', 1, 2] }])
       Sincere.sincereHook(false)
       expect(() => o.assert(0, 'test', 'M/%i', 1, 2)).to.throw(
-        AssertionError, 'D#2!.test: M/1 2')
+        AssertionError, 'D#0!.test: M/1 2')
       expect(trace).to.eql([{ o, loc: 'test', args: ['M/%i', 1, 2] }])
     })
   })
