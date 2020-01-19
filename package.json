@@ -1,6 +1,6 @@
 {
   "name": "sincere",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight javascript base class providing intuitive interface for debugging and diagnostics",
   "main": "Sincere.js",
   "scripts": {
