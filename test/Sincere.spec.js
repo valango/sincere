@@ -1,4 +1,6 @@
 'use strict'
+process.env.NODE_ENV = 'test'
+
 const ME = 'Sincere'
 
 const { expect } = require('chai')
