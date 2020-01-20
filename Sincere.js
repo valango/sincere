@@ -2,6 +2,7 @@
 const native = require('assert')
 const { format } = require('util')
 
+//  istanbul ignore next
 const assert = native.strict || native
 const notProduction = process.env.NODE_ENV !== 'production'
 const noop = () => undefined
