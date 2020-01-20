@@ -1,7 +1,8 @@
 'use strict'
-const assert = require('assert').strict
+const native = require('assert')
 const { format } = require('util')
 
+const assert = native.strict || native
 const notProduction = process.env.NODE_ENV !== 'production'
 const noop = () => undefined
 

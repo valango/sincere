@@ -1,7 +1,9 @@
 # Sincere [![Build Status](https://travis-ci.org/valango/sincere.svg?branch=master)](https://travis-ci.org/valango/sincere) [![Code coverage](https://codecov.io/gh/valango/sincere/branch/master/graph/badge.svg)](https://codecov.io/gh/valango/sincere)
 
-Sincere is a lightweight javascript base class providing intuitive interface for debugging and diagnostics
+Sincere is a lightweight ES6 base class providing intuitive interface for debugging and diagnostics
 of Node.js applications.
+
+With Node.js earlier than v8.6.0, something like [`babel`](https://babeljs.io/) is needed.
 
 ## Usage
 Install with npm
@@ -40,7 +42,7 @@ if your debugger breakpoint was set, you'd see the whole picture as it was just 
 How cool is that?
 
 ## API
-In 99% likelihood, _`assert()`_, _`sincereHook`_ and _`className`_ in all the API you need.
+In 99% likelihood, **_`assert()`_**, **_`sincereHook()`_** and **_`className`_** in all the API you need.
 
 Both _`assert()`_ and _`sincereMessage()`_ use Node.js native `util.format()`;
 see Node.js 
