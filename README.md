@@ -5,7 +5,7 @@ of Node.js applications.
 
 **NB:** v2.0 has breaking changes:
    1. former static methods _`sincereHook()`_ and _`sincereReset()`_ are renamed to
-   _`hook()`_ and _`reset()`_, respectively;
+   _`hook()`_ and _`reset()`_ respectively;
    1. both static methods behavior has slightly changed - see description below.
 
 With Node.js earlier than v8.6.0, something like [`babel`](https://babeljs.io/) is needed.
@@ -35,7 +35,7 @@ Sincere.hook(() => {
 const myInstance = new MyClass(...)
 
 let goodValue = myInstance.assert({good: true}, 'try')
-let badValue = myInstance.assert(0, 'try', 'this failed, but %O - you see', goodValue)O
+let badValue = myInstance.assert(0, 'try', 'this failed, but %O - you see', goodValue)
 
 ```
 
@@ -69,9 +69,9 @@ _**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the 
 calling it in non-test environment will throw exception.
 
 ### Instance properties
-**`className`** : string - actual class name, like `'MyClass'` above (read-only).
+**`className`** : string - actual class name, like `'MyClass'` (read-only).
 
-**`sincereId`** : string - unique id, something like `'MyClass#42'`.
+**`sincereId`** : string - unique id, something like `'MyClass#42'` (read-only).
 
 ### Instance methods
 
