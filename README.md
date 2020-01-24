@@ -3,6 +3,11 @@
 Sincere is a lightweight ES6 base class providing intuitive interface for debugging and diagnostics
 of Node.js applications.
 
+**NB:** v2.0 has breaking changes:
+   1. former static methods _`sincereHook()`_ and _`sincereReset()`_ are renamed to
+   _`hook()`_ and _`reset()`_, respectively;
+   1. both static methods behavior has slightly changed - see description below.
+
 With Node.js earlier than v8.6.0, something like [`babel`](https://babeljs.io/) is needed.
 
 ## Usage
@@ -23,7 +28,7 @@ class MyClass extends Sincere {
 ...
 
 //  Before the execution starts...
-Sincere.sincereHook(() => {
+Sincere.hook(() => {
   return 0     //  Set debugger breakpoint here.
 }
 
@@ -42,7 +47,7 @@ if your debugger breakpoint was set, you'd see the whole picture as it was just 
 How cool is that?
 
 ## API
-In 99% likelihood, **_`assert()`_**, **_`sincereHook()`_** and **_`className`_** in all the API you need.
+In 99% likelihood, **_`assert()`_**, **_`hook()`_** and **_`className`_** is all the API you need.
 
 Both _`assert()`_ and _`sincereMessage()`_ use Node.js native `util.format()`;
 see Node.js 
@@ -51,16 +56,17 @@ for details.
 
 ### Static methods
 
-**`sincereHook(callback=)`** : {function()}
-
-Set before-the-assertion-throws callback.
-Falsy value sets internal do-nothing function; undefined value
-is just ignored. **Returns** previous callback. <br />
+**`hook(callback=)`** <br />
+Sets a _before-the-assertion-will-throw_ callback.
+_Falsy_ value inhibits previously set callback; _`undefined`_ argument value
+has no effect. _Truthy_ non-function type argument will result in _`TypeError`_ thrown.<br />
+**Returns** callback function or _`false`_. <br />
 _**NB:**_ In production environment, this method does nothing.
 
-**`sincereReset()`** <br />
+**`reset()`** <br />
 Resets internal seed variable for `sincereId` property. <br />
-_**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the module.
+_**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the module;
+calling it in non-test environment will throw exception.
 
 ### Instance properties
 **`className`** : string - actual class name, like `'MyClass'` above (read-only).
@@ -69,11 +75,13 @@ _**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the 
 
 ### Instance methods
 
-**`assert(value: *, locus: {string}, …args)`** : {*}
-A wrapper method around the native `assert`. Returns the `value`, if it is truthy - e.g. assertion does not fire.
+**`assert(value, locus, …args)`** <br />
+A wrapper method around the native `assert.ok()`. Returns the `value`, if it is truthy - e.g. assertion does not fire.
 If assertion fails, then `args` are processed by native `util.format` and `util.inspect` functions,
 so the first arg may be format string.
 
-**`sincereMessage`**`(locus: string, args: Array<*>) : string`
-
-Compose a diagnostic message with instance id.
+**`sincereMessage(locus, args)`** <br />
+Compose a diagnostic message string prefixed with _`sincereId`_
+  * `locus : string    ` usually a method name;
+  * `args : Array<*>`  arguments to be passed to Node.js
+[`util.format()`](https://nodejs.org/dist/latest-v12.x/docs/api/util.html#util_util_format_format_args).

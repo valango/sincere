@@ -3,21 +3,18 @@ const native = require('assert')
 const { format } = require('util')
 
 //  istanbul ignore next
-const assert = native.strict || native
+const assert = (native.strict || native).ok
 const notProduction = process.env.NODE_ENV !== 'production'
-const noop = () => undefined
 
-let hook = noop, seed = -1
+let hook = false, seed = -1
 
 /**
  * A base class for better diagnostics and easier debugging.
  *
- * Only `assert()` and `className` interface should be used in non-diagnostic code.
- *
  * @example
  * const Sincere = require('Sincere')
  *
- * Sincere.sincereHook(() => {
+ * Sincere.hook(() => {
  *   return 0     //  Set debugger breakpoint here.
  * }
  *
@@ -33,7 +30,7 @@ class Sincere {
   }
 
   /**
-   * Wrapper around the native `assert` package.
+   * Wrapper around Node.js native `assert.ok`.
    *
    * It composes informative error message for failed assertion and
    * invokes assertion hook function before assertion error is thrown.
@@ -45,7 +42,7 @@ class Sincere {
    */
   assert (condition, locus, ...args) {
     if (condition) return condition                //  Chain-able.
-    if (notProduction) {
+    if (notProduction && hook) {
       hook.call(this, locus, args)
     }
     assert(condition, this.sincereMessage(locus, args))
@@ -61,20 +58,18 @@ class Sincere {
 
   /**
    * Sets a callback hook for assert() method.
-   * @param {function()|false|undefined} callback has no effect in production.
-   * @returns {function()}  previous callback hook.
+   * @param {function()|boolean|undefined} callback has no effect in production.
+   * @returns {*}  previous callback hook.
    */
-  static sincereHook (callback = undefined) {
+  static hook (callback = undefined) {
     const old = hook
-    if (notProduction && callback !== undefined) hook = callback || noop
+    if (notProduction && callback !== undefined) {
+      if (callback && typeof callback !== 'function') {
+        throw TypeError('Sincere.hook: not a function')
+      }
+      hook = callback
+    }
     return old
-  }
-
-  /**
-   * Reset unique id generation seed. Has no effect in production mode.
-   */
-  static sincereReset () {
-    if (notProduction) seed = -1
   }
 
   /**
@@ -88,14 +83,21 @@ class Sincere {
   /**
    * Compose a diagnostic message.
    *
-   * @param {string} locus
-   * @param {Array<*>=} args
-   * @returns {string}
+   * @param {string} locus - usually a method name.
+   * @param {Array<*>=} args - to be processed by Node.js 'util.format'
+   * @returns {string} - sincereId + ['.' + locus] + [': ' + args]
    */
   sincereMessage (locus, args) {
-    return this.sincereId + '.' + locus +
+    return this.sincereId + (locus ? '.' + locus : '') +
       ((args && args.length > 0) ? ': ' + format.apply(undefined, args) : '')
   }
+}
+
+if (process.env.NODE_ENV === 'test') {
+  /**
+   * Reset unique id generation seed. Available in test environment only.
+   */
+  Sincere.reset = () => (seed = -1)
 }
 
 module.exports = Sincere
