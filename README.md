@@ -69,7 +69,7 @@ _**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the 
 calling it in non-test environment will throw exception.
 
 ### Instance properties
-The instance properties are read-only and can not be over-ridden in derived classes.
+The instance properties are non-enumerable read-only and can not be overridden in derived classes.
 
 **`className`** : string - actual class name, like `'MyClass'`.
 
