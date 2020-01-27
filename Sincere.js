@@ -24,9 +24,10 @@ let hook = false, seed = -1
  */
 class Sincere {
   constructor () {
-    this._className = /^(class|function)\s+(\w+)/
-      .exec(this.constructor.toString())[2]
-    this._id = this._className + '#' + ++seed
+    const c = /^(class|function)\s+(\w+)/.exec(this.constructor.toString())[2]
+
+    Object.defineProperty(this, 'className', { value: c })
+    Object.defineProperty(this, 'sincereId', { value: c + '#' + ++seed })
   }
 
   /**
@@ -49,14 +50,6 @@ class Sincere {
   }
 
   /**
-   * Actual class name of the instance.
-   * @type {string}
-   */
-  get className () {
-    return this._className
-  }
-
-  /**
    * Sets a callback hook for assert() method.
    * @param {function()|boolean|undefined} callback has no effect in production.
    * @returns {*}  previous callback hook.
@@ -70,14 +63,6 @@ class Sincere {
       hook = callback
     }
     return old
-  }
-
-  /**
-   * Unique instance id for diagnostic purposes.
-   * @type {string}
-   */
-  get sincereId () {
-    return this._id
   }
 
   /**

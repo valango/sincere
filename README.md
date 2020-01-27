@@ -69,9 +69,11 @@ _**NB:**_ available only if **NODE_ENV** was set to `'test'` before loading the 
 calling it in non-test environment will throw exception.
 
 ### Instance properties
-**`className`** : string - actual class name, like `'MyClass'` (read-only).
+The instance properties are read-only and can not be over-ridden in derived classes.
 
-**`sincereId`** : string - unique id, something like `'MyClass#42'` (read-only).
+**`className`** : string - actual class name, like `'MyClass'`.
+
+**`sincereId`** : string - unique id, something like `'MyClass#42'`.
 
 ### Instance methods
 

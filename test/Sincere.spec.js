@@ -22,14 +22,15 @@ const load = (env) => {
   Sincere = require(path)
 
   Derived = class D extends Sincere {
-    get sincereId () {
+    get sincereId () {  //  Attempt to override should not have effect.
       return super.sincereId + '!'
     }
   }
 }
 
 const constructorTest = () => {
-  expect(o1.sincereId).to.equal('D#0!', 'sincereId-1')
+  expect(Object.keys(o1)).to.eql([], 'enumerable properties')
+  expect(o1.sincereId).to.equal('D#0', 'sincereId-1')
   if (mode === 'test') {
     Sincere.reset()
   } else {
@@ -39,7 +40,7 @@ const constructorTest = () => {
   expect(o2.sincereId).to.equal(mode === 'test' ? 'Sincere#0' : 'Sincere#1')
   expect(o1.className).to.equal('D')
   expect(o2.className).to.equal('Sincere')
-  expect(o1.sincereMessage('foo')).to.equal('D#0!.foo')
+  expect(o1.sincereMessage('foo')).to.equal('D#0.foo')
   expect(Sincere.hook()).to.equal(false, 'hook')
 }
 
@@ -47,7 +48,7 @@ const assertionTest = () => {
   expect(Sincere.hook(callback)).to.equal(false)
   expect(o1.assert('data', 'never')).to.equal('data', 'assertion ok')
   expect(() => o1.assert(0, 'test', 1)).to
-    .throw(AssertionError, /D#\d+!\.test: 1$/)
+    .throw(AssertionError, /D#\d+\.test: 1$/)
   if (mode === 'production') {
     expect(trace).to.eql([])
     expect(Sincere.hook('bad')).to.equal(false)
